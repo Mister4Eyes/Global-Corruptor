@@ -1,0 +1,17 @@
+﻿  BaseAddressGetter.cpp
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(119): warning C4311: 'type cast': pointer truncation from 'LPVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(119): warning C4302: 'type cast': truncation from 'LPVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(120): warning C4311: 'type cast': pointer truncation from 'LPVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(120): warning C4302: 'type cast': truncation from 'LPVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(136): warning C4311: 'type cast': pointer truncation from 'PVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(136): warning C4302: 'type cast': truncation from 'PVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(137): warning C4311: 'type cast': pointer truncation from 'PVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(137): warning C4302: 'type cast': truncation from 'PVOID' to 'ulong'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(155): warning C4312: 'type cast': conversion from 'ulong' to 'LPVOID' of greater size
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(241): warning C4244: 'initializing': conversion from 'ulong' to 'char', possible loss of data
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(242): warning C4244: 'initializing': conversion from 'ulong' to 'char', possible loss of data
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(269): warning C4312: 'type cast': conversion from 'ulong' to 'LPVOID' of greater size
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(273): warning C4302: 'type cast': truncation from 'void *' to 'char'
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(278): warning C4800: 'ulong': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\mister 4 eyes\documents\visual studio 2015\projects\baseaddressgetter\baseaddressgetter\baseaddressgetter.cpp(280): warning C4312: 'type cast': conversion from 'ulong' to 'LPVOID' of greater size
+  BaseAddressGetter.vcxproj -> C:\Users\Mister 4 Eyes\documents\visual studio 2015\Projects\BaseAddressGetter\x64\Debug\BaseAddressGetter.exe
