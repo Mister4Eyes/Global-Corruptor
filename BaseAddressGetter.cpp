@@ -33,20 +33,20 @@
 static std::random_device rd;
 static std::mt19937_64 gen(rd());
 
-uintmax_t randomLong(uintmax_t max)
+size_t randomLong(size_t max)
 {
-	std::uniform_int_distribution<uintmax_t> dis;
-	uintmax_t rand = dis(gen);
+	std::uniform_int_distribution<size_t> dis;
+	size_t rand = dis(gen);
 
 	//Mod of max
 	rand = rand%max;
 	return rand;
 }
 
-uintmax_t randomLong()
+size_t randomLong()
 {
-	std::uniform_int_distribution<uintmax_t> dis;
-	uintmax_t rand = dis(gen);
+	std::uniform_int_distribution<size_t> dis;
+	size_t rand = dis(gen);
 	return rand;
 }
 
@@ -132,15 +132,15 @@ std::vector<range> getValidAddresses(PROCESSENTRY32 process)
 		{
 			range r;
 			r.start = static_cast<uintptr_t>(memBasicInfo.BaseAddress);
-			r.end = static_cast<uintptr_t>(memBasicInfo.BaseAddress) + static_cast<uintmax_t>(memBasicInfo.RegionSize);
+			r.end = static_cast<uintptr_t>(memBasicInfo.BaseAddress) + static_cast<size_t>(memBasicInfo.RegionSize);
 			output.push_back(r);
 		}
 
-		minAddrVal += static_cast<uintmax_t>memBasicInfo.RegionSize;
+		minAddrVal += static_cast<size_t>memBasicInfo.RegionSize;
 		/*
 		The seperate address values fixes the strange nature of the LPVOID pointer where it dosent act like a proper pointer
-		It insted does something where I cant even predict where the next address should be, but casting it from a uintmax_t seems to do the trick.
-		Also the uintmax_t is used for 2 reasons,
+		It insted does something where I cant even predict where the next address should be, but casting it from a size_t seems to do the trick.
+		Also the size_t is used for 2 reasons,
 		1, when something is in the full 64 bit range, it dosent use 2^64/2 which is what it will use when dealing with negatives
 		2, I am always counting up, so if it becomes low again, I know it has ended.
 		*/
@@ -203,22 +203,22 @@ std::vector<range> getValidAddresses(pid_t process)
 #endif // _WIN32
 
 //Really simple script for really simple people (like me)
-uintmax_t totalLength(std::vector<range> & pages)
+size_t totalLength(std::vector<range> & pages)
 {
-	uintmax_t totalLength = 0;
+	size_t totalLength = 0;
 	for (auto ran: pages)
 		totalLength += ran.end - ran.start;
 	return totalLength;
 }
 
-uintptr_t memoryMap(std::vector<range> pages, uintmax_t position)
+uintptr_t memoryMap(std::vector<range> pages, size_t position)
 {
 
 	if (pages.size())
 	{
-		uintmax_t prevVal = 0;
-		uintmax_t val = 0;
-		for (uintmax_t i = 0; i < pages.size(); i++)
+		size_t prevVal = 0;
+		size_t val = 0;
+		for (size_t i = 0; i < pages.size(); i++)
 		{
 			val += pages[i].end - pages[i].start;
 			if (position <= val)
@@ -263,7 +263,7 @@ int main(int argc, char ** argv)
 
 	while (true)
 	{
-		uintmax_t totLen = totalLength(ranges);
+		size_t totLen = totalLength(ranges);
 		size_t output;
 		int exitCode = 0;
 #ifdef _WIN32
@@ -276,29 +276,29 @@ int main(int argc, char ** argv)
 #endif // _WIN32
 		{
 			//Gets a random value and mapps it to the correct memory address
-			uintmax_t uInput = randomLong(totLen);
+			size_t uInput = randomLong(totLen);
 			uintptr_t mappedAddr = memoryMap(ranges, uInput);
 
 			//Just too lazy to make a random char, so I used the random long
-			uintmax_t first = (((randomLong(totLen)) / 1024)) * 1024;
-			uintmax_t last = ((randomLong(totLen)) / 1024) * 1024;
+			size_t first = (((randomLong(totLen)) / 1024)) * 1024;
+			size_t last = ((randomLong(totLen)) / 1024) * 1024;
 
 			//Swaps if first is greater than last
 			if (last < first)
 			{
-				uintmax_t temp = first;
+				size_t temp = first;
 				first = last;
 				last = temp;
 			}
 			char val = randomLong();
 			char changeVal = randomLong();
-			uintmax_t prevPrec = 0;
+			size_t prevPrec = 0;
 			std::cout << "First: " << std::hex << first << std::endl;
 			std::cout << "Last : " << std::hex << last << std::endl;
 			std::cout << std::dec << val << std::endl;
 			std::cout << std::dec << 0 << "/" << last - first << " " << 0 << "%" << std::endl;
-			uintmax_t bytesChanged = 0;
-			for (uintmax_t i = first; i < last; i += 1024)
+			size_t bytesChanged = 0;
+			for (size_t i = first; i < last; i += 1024)
 			{
 #ifdef _WIN32
 				GetExitCodeProcess(processHandle, reinterpret_cast<LPDWORD>(&exitCode));
@@ -308,7 +308,7 @@ int main(int argc, char ** argv)
 				if (WIFEXITED(exitCode)) break;
 #endif // _WIN32
 				{
-					uintmax_t prec = ((i - first) * 100) / (last - first);
+					size_t prec = ((i - first) * 100) / (last - first);
 
 					if (prec > prevPrec)
 					{
@@ -327,7 +327,7 @@ int main(int argc, char ** argv)
 					if (ptrace(PTRACE_PEEKDATA, processes[input], addr, nullptr) != -1)
 #endif // _WIN32
 					{
-						for (uintmax_t j = 0; j < output; j++)
+						for (size_t j = 0; j < output; j++)
 						{
 							char cChar = static_cast<char>(outVal[j]);
 							//Checks if value is equal to val
