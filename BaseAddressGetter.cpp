@@ -1,22 +1,21 @@
 ﻿#ifdef _WIN32 // lowercasing header names for MinGW compatibility
 	#include "stdafx.h"
 	#include <windows.h>
-	#include <tchar.h> 
 	#include <psapi.h>
 	#include <winbase.h> 
 	#include <tlhelp32.h>
 #else
-	#include <errno.h>
-	#include <unistd.h>
+	#include <cerrno>
 	#include <sys/types.h>
-	#include <cstdio>
-	#include <dirent.h>
 	#include <algorithm>
-	#include <cstdlib>
 	#include <fstream>
 	#include <regex>
 	#include <sys/ptrace.h>
 	#include <sys/wait.h>
+	#include <boost/filesystem.hpp>
+	#include <cctype>
+	
+	namespace fs = boost::filesystem;
 #endif //_WIN32
 
 #include <iostream>
@@ -24,7 +23,6 @@
 #include <iomanip>
 #include <string>
 #include <random>
-#include <cstring>
 #include <cstdint>
 #include <thread>
 #include <chrono>
@@ -160,17 +158,19 @@ std::vector<range> getValidAddresses(PROCESSENTRY32 process)
 std::vector<pid_t> GetProcessList()
 {
 	std::vector<pid_t> processes;
-	dirent * dp;
-	DIR * procs = opendir("/proc");
+	fs::path procs("/proc");
 	
-	if (!procs)
+	if (!fs::is_directory(procs) || !fs::exists(procs))
 		std::cerr << "Unable to open /proc" << std::endl;
 	else
 	{
-		while ((dp = readdir(procs)) != nullptr)
+		for (auto dp: fs::directory_iterator(procs))
 		{
-			pid_t pid = atoi(dp->d_name);
-			if (pid <= 0) continue;
+			pid_t pid;
+			std::string s = dp.path().filename().string();
+			if (std::all_of(s.begin(), s.end(), isdigit) && fs::is_directory(dp.path()))
+				pid = std::stoi(s);
+			else continue;
 			processes.push_back(pid);
 		}
 	}
@@ -339,7 +339,7 @@ int main(int argc, char ** argv)
 #ifdef _WIN32
 									WriteProcessMemory(processHandle, reinterpret_cast<LPVOID>(addr), reinterpret_cast<LPCVOID>(&changeVal), 4, &output);
 #else
-									ptrace(PTRACE_POKEDATA, processes[input], addr+4, changeVal); 
+									ptrace(PTRACE_POKEDATA, processes[input], addr+(sizeof(void*)), changeVal); 
 #endif // _WIN32
 									std::cout << std::right << std::setfill('0') << std::setw(8) << std::hex << addr << " " << changeVal << std::endl;
 									bytesChanged++;
