@@ -1,0 +1,11 @@
+.vs
+CMakeCache.txt
+CMakeFiles/
+Debug/
+x64/
+*.filters
+*.opendb
+*.sdf
+*.sln
+*.user
+*.vcxproj
